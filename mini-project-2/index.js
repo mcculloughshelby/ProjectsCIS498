@@ -11,6 +11,7 @@ import posts from './Routes/posts.js';
 dotenv.config();
 
 const app = express();
+app.use = (cors());
 app.use(express.json());
 
 // Routes for movies, users, and posts
