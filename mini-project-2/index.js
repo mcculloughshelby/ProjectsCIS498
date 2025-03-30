@@ -4,9 +4,9 @@ import cors from 'cors';
 import { Router } from 'express';
 import Routes from 'express';
 
-import movies from './routes/movies.js';
-import users from './routes/users.js';
-import posts from './routes/posts.js';
+import movies from './Routes/movies.js';
+import users from './Routes/users.js';
+import posts from './Routes/posts.js';
 
 dotenv.config();
 
