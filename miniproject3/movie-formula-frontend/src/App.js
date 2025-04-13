@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+// src/components/Home.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function App() {
+const Home = ({ user }) => {
+  const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+
+  useEffect(() => {
+    axios.get('/api/movies')
+      .then(res => setMovies(res.data))
+      .catch(err => console.error('Fetch failed:', err));
+  }, []);
+
+  const handleHover = (movie) => setSelectedMovie(movie);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="home-container" style={{ display: 'flex', gap: '2rem' }}>
+      <div className="movie-list" style={{ flex: 1 }}>
+        {movies.map(movie => (
+          <div key={movie._id} onMouseEnter={() => handleHover(movie)}>
+            {movie.title}
+          </div>
+        ))}
+        {user?.role === 'admin' && (
+          <div>
+            <button>Add Movie</button>
+            {/* update/delete buttons can be inside movie listing */}
+          </div>
+        )}
+      </div>
+      <div className="movie-details" style={{ flex: 2 }}>
+        {selectedMovie ? (
+          <div>
+            <h2>{selectedMovie.title}</h2>
+            <p>{selectedMovie.description}</p>
+            <p>{selectedMovie.genre}</p>
+            <p>Released: {selectedMovie.releaseYear}</p>
+          </div>
+        ) : (
+          <p>Hover over a movie to see details</p>
+        )}
+      </div>
     </div>
   );
-}
+};
 
-export default App;
+export default Home;
